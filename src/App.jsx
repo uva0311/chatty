@@ -22,7 +22,7 @@ class App extends Component {
       'id': '',
       'type': 'sendMessage',
       'content': msg,
-      'username': this.state.currentuser
+      'username': this.state.currentuser.name
     }
 
     this.socket.send(JSON.stringify(newMessage));
@@ -30,7 +30,7 @@ class App extends Component {
 
   changeUserName(username) {
     this.setState({
-      currentuser: { name: username }
+      currentuser: {name: username}
     });
   }
 
@@ -54,8 +54,6 @@ class App extends Component {
       this.setState({
         messages: [...this.state.messages, msg]
       });
-
-
     }
 
     this.socket.onclose = () => {
@@ -67,7 +65,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ChatBar user={this.props.username} addMessage={this.addMessage}/>
+        <ChatBar changeUserName={this.changeUserName}
+                 username={this.state.currentuser.name}
+                 addMessage={this.addMessage}/>
         <MessageList messages={this.state.messages}/>
       </div>
     );
