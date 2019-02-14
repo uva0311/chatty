@@ -13,7 +13,6 @@ class App extends Component {
     }
 
     this.addMessage = this.addMessage.bind(this);
-    // this.changeUserName = this.changeUserName.bind(this);
     this.addNotification = this.addNotification.bind(this);
   }
 
@@ -32,12 +31,6 @@ class App extends Component {
 
     this.socket.send(JSON.stringify(newMessage));
   }
-
-  // changeUserName(Newname) {
-  //   this.setState({
-
-  //   });
-  // }
 
   addNotification(newName) {
     const newNotification = {
