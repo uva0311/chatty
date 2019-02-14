@@ -66,15 +66,16 @@ class App extends Component {
         case 'incomingMessage':
           // handle incoming message
           this.setState({
-            messages: [...this.state.messages, msg]
+            messages: [...this.state.messages, msg],
+            userColor: msg.userColor
           });
+
           break;
         case 'incomingNotification':
           // handle incomnig notification
           this.setState({
             messages: [...this.state.messages, msg]
           });
-          console.log(this.state.messages);
           break;
         case 'userCount':
           this.setState({
