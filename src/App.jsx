@@ -8,30 +8,48 @@ class App extends Component {
     super();
     // set initial state
     this.state = {
-      currentuser: { name: "Bob"},
+      currentuser: {name: 'Anonymous'},
       messages: []
     }
 
     this.addMessage = this.addMessage.bind(this);
-    this.changeUserName = this.changeUserName.bind(this);
+    // this.changeUserName = this.changeUserName.bind(this);
+    this.addNotification = this.addNotification.bind(this);
   }
 
-  // add input message to the stored message data
-  addMessage(msg) {
+  // add input message and send the messaged posted to the server
+  addMessage(username, msg) {
+    if (username != this.state.currentuser.name) {
+      this.addNotification(username)
+    }
+
     const newMessage = {
-      'id': '',
-      'type': 'sendMessage',
-      'content': msg,
-      'username': this.state.currentuser.name
+      id: '',
+      type: 'postMessage',
+      content: msg,
+      username: username
     }
 
     this.socket.send(JSON.stringify(newMessage));
   }
 
-  changeUserName(username) {
+  // changeUserName(Newname) {
+  //   this.setState({
+
+  //   });
+  // }
+
+  addNotification(newName) {
+    const newNotification = {
+      type: 'postNotification',
+      content: `${this.state.currentuser.name} has changed their name to ${newName}`
+    }
+
     this.setState({
-      currentuser: {name: username}
+      currentuser: {name: newName}
     });
+
+    this.socket.send(JSON.stringify(newNotification));
   }
 
   componentDidMount() {
@@ -50,10 +68,25 @@ class App extends Component {
 
       // handle incoming messages
       const msg = JSON.parse(event.data);
+      switch(msg.type) {
+        case 'incomingMessage':
+          // handle incoming message
+          this.setState({
+            messages: [...this.state.messages, msg]
+          });
+          break;
+        case 'incomingNotification':
+          // handle incomnig notification
+          this.setState({
+            messages: [...this.state.messages, msg]
+          });
+          console.log(this.state.messages);
+          break;
+        default:
+          // show an error in the console if the message type is unknown
+          throw new Error("Unknown event type " + data.type);
+      }
 
-      this.setState({
-        messages: [...this.state.messages, msg]
-      });
     }
 
     this.socket.onclose = () => {
@@ -65,9 +98,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ChatBar changeUserName={this.changeUserName}
-                 username={this.state.currentuser.name}
-                 addMessage={this.addMessage}/>
+        <ChatBar username={this.state.currentuser.name}
+                 addMessage={this.addMessage}
+                 addNotification={this.addNotification}/>
         <MessageList messages={this.state.messages}/>
       </div>
     );
