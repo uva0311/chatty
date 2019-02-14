@@ -9,7 +9,8 @@ class App extends Component {
     // set initial state
     this.state = {
       currentuser: {name: 'Anonymous'},
-      messages: []
+      messages: [],
+      onlineUsers: 0
     }
 
     this.addMessage = this.addMessage.bind(this);
@@ -75,6 +76,11 @@ class App extends Component {
           });
           console.log(this.state.messages);
           break;
+        case 'userCount':
+          this.setState({
+            onlineUsers : msg.onlineUsers
+          });
+          break;
         default:
           // show an error in the console if the message type is unknown
           throw new Error("Unknown event type " + data.type);
@@ -91,6 +97,10 @@ class App extends Component {
   render() {
     return (
       <div>
+        <nav className="navbar">
+          <a href="/" className="navbar-brand">Chatty</a>
+          <p style={{float: 'right'}}>{this.state.onlineUsers} Users online</p>
+        </nav>
         <ChatBar username={this.state.currentuser.name}
                  addMessage={this.addMessage}
                  addNotification={this.addNotification}/>
