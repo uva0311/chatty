@@ -36,12 +36,6 @@ class ChatBar extends Component {
     }
   }
 
-  handleNotice = (evt) => {
-    if(evt.key == 'Enter' && evt.target.value !== '') {
-      this.props.addNotification(evt.target.value);
-    }
-  }
-
   render() {
     return (
       // the chatbar template goes here
