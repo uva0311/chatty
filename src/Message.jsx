@@ -3,6 +3,15 @@ import React, {Component} from 'react';
 class Message extends Component {
 
   render() {
+
+   const textOrImg = (this.props.messageContent).includes('img')? (
+    <span className="message-content"
+          dangerouslySetInnerHTML={{__html: this.props.messageContent }}>
+    </span>
+   ):(
+    <span className="message-content">{this.props.messageContent}</span>
+   );
+
    return(
     // message template
     <div className="message">
@@ -10,7 +19,7 @@ class Message extends Component {
             // props from app.jsx
             style={{color: this.props.userColor}}>
             {this.props.messageUser}</span>
-      <span className="message-content">{this.props.messageContent}</span>
+      { textOrImg }
     </div>
    );
   }
