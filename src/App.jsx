@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 
-
 class App extends Component {
   constructor() {
     super();
@@ -10,7 +9,8 @@ class App extends Component {
     this.state = {
       currentuser: {name: 'Anonymous'},
       messages: [],
-      onlineUsers: 0
+      onlineUsers: 0,
+      userColor: ''
     }
 
     this.addMessage = this.addMessage.bind(this);
@@ -27,7 +27,8 @@ class App extends Component {
       id: '',
       type: 'postMessage',
       content: msg,
-      username: username
+      username: username,
+      userColor: this.state.userColor
     }
 
     this.socket.send(JSON.stringify(newMessage));
@@ -66,8 +67,8 @@ class App extends Component {
         case 'incomingMessage':
           // handle incoming message
           this.setState({
-            messages: [...this.state.messages, msg],
-            userColor: msg.userColor
+            messages: [...this.state.messages, msg]
+            //userColor: msg.userColor
           });
 
           break;
@@ -75,11 +76,17 @@ class App extends Component {
           // handle incomnig notification
           this.setState({
             messages: [...this.state.messages, msg]
+
           });
           break;
         case 'userCount':
           this.setState({
             onlineUsers : msg.onlineUsers
+          });
+          break;
+        case 'setColor':
+          this.setState({
+            userColor : msg.userColor
           });
           break;
         default:
