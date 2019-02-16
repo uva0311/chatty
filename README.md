@@ -12,7 +12,7 @@ A realtime messagaing web application built with ReactJS, WebSocket, along with 
 
 ### Screenshot
 Here is a short gif to show how the app works
-!(http://g.recordit.co/9mGNVdGojs.gif)
+![chatty-msg](http://g.recordit.co/9mGNVdGojs.gif)
 
 
 ### Usage
